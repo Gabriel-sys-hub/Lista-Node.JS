@@ -36,7 +36,13 @@ app.post('/users', checksExistsUserAccount,  (request, response) => {
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const username = request.header('username');
+
+  const filterByUser = users.find((each) => each.username === username);
+
+  if (!filterByUser) return response.status(400).json({ error: "User does not exist"})
+
+  return response.status(201).json(filterByUser.todos);
 });
 
 app.post('/todos', checksExistsUserAccount, (request, response) => {
